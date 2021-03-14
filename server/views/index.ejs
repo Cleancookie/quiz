@@ -6,18 +6,51 @@
   <title>Server</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    canvas {
+      border: 1px solid black;
+    }
+  </style>
 </head>
 
 <body>
   <h1>Testing</h1>
 
+  <canvas id="canvas" width="800" height="600"></canvas>
+
   <script src="/socket.io/socket.io.js"></script>
   <script>
     const socket = io();
+    const canvas = document.querySelector('#canvas');
+    const ctx = canvas.getContext('2d');
 
     socket.on('fullState', (data) => {
       window.state = data;
+      drawPlayerMarkers();
     })
+
+    const drawPlayerMarkers = () => {
+      if (!('players' in window.state)) {
+        return;
+      }
+      const players = window.state.players;
+      
+      for (playerId in players) {
+        const player = players[playerId];
+        if (!player.x || !player.y) {
+          return;
+        }
+        ctx.fillRect(player.x, player.y, 5, 5)
+      }
+    };
+
+    canvas.addEventListener('click', function (data) { 
+      let rect = canvas.getBoundingClientRect();
+      socket.emit('move', {
+        x: Math.floor(data.clientX - rect.left), 
+        y: Math.floor(data.clientY - rect.top)
+      })
+    });
   </script>
 </body>
 </html>

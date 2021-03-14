@@ -32,6 +32,8 @@ io.on('connection', (socket) => {
         }
 
         setPosition(socket.id, data.x, data.y);
+
+        io.in('MainRoom').emit('fullState', state);
     });
 });
 
