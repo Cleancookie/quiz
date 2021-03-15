@@ -10,7 +10,7 @@ io.on('connection', (socket) => {
     console.log(`✨ new user (${socket.id})`);
 
     // Init new player on server side
-    state.players[socket.id] = {};
+    state.players[socket.id] = { colour: getRandomColor() };
     socket.join('MainRoom');
 
     // Init player on client side
@@ -37,10 +37,24 @@ io.on('connection', (socket) => {
     });
 });
 
-async function setPosition(playerId, x, y) {
+function setPosition(playerId, x, y) {
     console.log(`🏃 User(${playerId}) moved to [${x}, ${y}]`);
     state.players[playerId].x = x;
     state.players[playerId].y = y;
+}
+
+function getRandomColor() {
+    const colours = [
+        '#BB5A3E',
+        '#ABBB3E',
+        '#6CBB3E',
+        '#40BFBB',
+        '#4644C1',
+        '#BC47C2',
+        '#0D2623',
+    ];
+
+    return colours[Math.floor(Math.random() * colours.length)];
 }
 
 module.exports = io;
