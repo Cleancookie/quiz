@@ -10,6 +10,10 @@ socket.on('fullState', (data) => {
     drawPlayerMarkers();
 });
 
+socket.on('setImage', (data) => {
+    canvas.style.backgroundImage = `url(${data})`;
+})
+
 canvas.addEventListener('click', function (data) {
     let rect = canvas.getBoundingClientRect();
     socket.emit('move', {
@@ -38,3 +42,7 @@ const drawPlayerMarkers = () => {
 const clearBoard = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 };
+
+window.setImg = (url) => {
+    socket.emit('requestImage', url)
+}

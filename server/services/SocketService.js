@@ -35,6 +35,10 @@ io.on('connection', (socket) => {
 
         io.in('MainRoom').emit('fullState', state);
     });
+
+    socket.on('requestImage', (url) => {
+        io.in('MainRoom').emit('setImage', url);
+    });
 });
 
 function setPosition(playerId, x, y) {
