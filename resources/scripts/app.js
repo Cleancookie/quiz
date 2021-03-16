@@ -1,4 +1,5 @@
 const io = require('socket.io-client');
+import { animate } from "popmotion"
 const socket = io();
 const canvas = document.querySelector('#canvas');
 /**
@@ -16,6 +17,15 @@ socket.on('setImage', (data) => {
         window.state.background = data;
     }
 })
+
+socket.on('playerStateUpdate', (playerState) => {
+    animate({
+        from: window.state.players[playerState.id],
+        to: playerState,
+        duration: 50,
+        onUpdate: (latest) => {window.state.players[playerState.id] = latest},
+    });
+});
 
 canvas.addEventListener('click', function (data) {
     let rect = canvas.getBoundingClientRect();
@@ -71,18 +81,4 @@ setInterval(refreshBoard, (1000/144))
 // Move this into admin protected route
 window.setImg = (url) => {
     socket.emit('requestImage', url)
-}
-
-window.yerd = (playerId) => {
-    window.state.players[playerId];
-
-    window.popmotion
-        .tween({
-            to: 600,
-            from: 0,
-            duration: 1000,
-        })
-    .start((v) => {
-        window.state.players[playerId].x = v;
-    });
 }

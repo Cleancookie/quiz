@@ -15,6 +15,7 @@ let state = {
 io.on('connection', (socket) => {
     // Init new player on server side
     state.players[socket.id] = { 
+        id: socket.id,
         name: getRandomName(),
         colour: getRandomColor()
      };
@@ -43,7 +44,7 @@ io.on('connection', (socket) => {
 
         setPosition(socket.id, data.x, data.y);
 
-        io.in('MainRoom').emit('fullState', state);
+        io.in('MainRoom').emit('playerStateUpdate', state.players[socket.id]);
     });
 
     socket.on('requestImage', (url) => {
