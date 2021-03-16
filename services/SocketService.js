@@ -19,6 +19,7 @@ io.on('connection', (socket) => {
     // Socket event listeners
     socket.on('disconnect', () => {
         delete state.players[socket.id];
+        io.in('MainRoom').emit('fullState', state);
     });
 
     socket.on('getFullState', (data) => {
