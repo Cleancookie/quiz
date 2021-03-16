@@ -62,6 +62,10 @@ const refreshUsersList = async () => {
         return player[1].name;
     });
 
+    // Update user counter
+    let userListHeading = document.querySelector('.js-users-title');
+    userListHeading.innerHTML = `Users(${Object.entries(window.state.players).length})`;
+
     let userList = document.querySelector('.js-users');
     userList.innerHTML = '';
     let newLiTemplate = document.querySelector('.js-new-li');
