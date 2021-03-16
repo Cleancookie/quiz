@@ -1,3 +1,4 @@
+
 const socket = io();
 const canvas = document.querySelector('#canvas');
 /**
@@ -40,9 +41,23 @@ const refreshBoard = () => {
 }
 
 // Game loop
-setInterval(refreshBoard, 100)
+setInterval(refreshBoard, 10)
 
 // Move this into admin protected route
 window.setImg = (url) => {
     socket.emit('requestImage', url)
+}
+
+window.yerd = (playerId) => {
+    window.state.players[playerId];
+
+    window.popmotion
+        .tween({
+            to: 600,
+            from: 0,
+            duration: 1000,
+        })
+    .start((v) => {
+        window.state.players[playerId].x = v;
+    });
 }
