@@ -35,7 +35,7 @@ canvas.addEventListener('click', function (data) {
     });
 });
 
-const refreshBoard = async () => {
+const refreshBoard = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     if (!window.state) {
@@ -57,7 +57,7 @@ const refreshBoard = async () => {
     }
 }
 
-const refreshUsersList = async () => {
+const refreshUsersList = () => {
     const names = Object.entries(window.state.players).map((player) => {
         return player[1].name;
     });

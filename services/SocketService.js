@@ -21,10 +21,9 @@ io.on('connection', (socket) => {
      };
     socket.join('MainRoom');
     console.log(`✨ new user ${state.players[socket.id].name}(${socket.id})`);
-    io.in('MainRoom').emit('fullState', state);
 
     // Init player on client side
-    socket.emit('fullState', state);
+    io.in('MainRoom').emit('fullState', state);
 
     // Socket event listeners
     socket.on('disconnect', () => {

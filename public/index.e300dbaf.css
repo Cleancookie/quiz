@@ -2,12 +2,16 @@
 body {
   font-family: "Comic Neue", cursive;
   font-size: 1.2rem;
+  background-color: #ececec;
 }
 canvas {
-  border: 1px solid black;
+  border: 0px;
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
+  background-color: #fff;
+  box-shadow: 12px 10px 0px 1px black;
+  border-radius: 4px;
 }
 .container {
   margin: auto;
