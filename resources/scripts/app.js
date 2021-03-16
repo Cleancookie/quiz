@@ -8,6 +8,7 @@ const ctx = canvas.getContext('2d');
 
 socket.on('fullState', (data) => {
     window.state = data;
+    refreshUsersList();
 });
 
 socket.on('setImage', (data) => {
@@ -40,9 +41,26 @@ const refreshBoard = async () => {
     }
 }
 
+const refreshUsersList = async () => {
+    const names = Object.entries(window.state.players).map((player) => {
+        return player[1].name;
+    });
+
+    let userList = document.querySelector('.js-users');
+    userList.innerHTML = '';
+    let newLiTemplate = document.querySelector('.js-new-li');
+
+    names.forEach((name) => {
+        let newUser = newLiTemplate.cloneNode(true);
+        newUser.removeAttribute('hidden');
+        newUser.classList.remove('js-new-li');
+        newUser.innerHTML = name;
+        userList.appendChild(newUser);
+    })
+}
+
 // Game loop at 144 fps
 setInterval(refreshBoard, (1000/144))
-
 // Move this into admin protected route
 window.setImg = (url) => {
     socket.emit('requestImage', url)

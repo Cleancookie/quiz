@@ -1,4 +1,10 @@
 const socketio = require('socket.io');
+const {
+    uniqueNamesGenerator,
+    adjectives,
+    animals,
+} = require('unique-names-generator');
+
 const io = socketio();
 
 let state = {
@@ -7,11 +13,14 @@ let state = {
 };
 
 io.on('connection', (socket) => {
-    console.log(`✨ new user (${socket.id})`);
-
     // Init new player on server side
-    state.players[socket.id] = { colour: getRandomColor() };
+    state.players[socket.id] = { 
+        name: getRandomName(),
+        colour: getRandomColor()
+     };
     socket.join('MainRoom');
+    console.log(`✨ new user ${state.players[socket.id].name}(${socket.id})`);
+    io.in('MainRoom').emit('fullState', state);
 
     // Init player on client side
     socket.emit('fullState', state);
@@ -61,6 +70,14 @@ function getRandomColor() {
     ];
 
     return colours[Math.floor(Math.random() * colours.length)];
+}
+
+function getRandomName() {
+    return uniqueNamesGenerator({
+        dictionaries: [adjectives, animals],
+        separator: ' ',
+        style: 'capital',
+    });
 }
 
 module.exports = io;
