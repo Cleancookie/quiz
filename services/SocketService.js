@@ -37,6 +37,7 @@ io.on('connection', (socket) => {
     });
 
     socket.on('requestImage', (url) => {
+        state.background = url;
         io.in('MainRoom').emit('setImage', url);
     });
 });

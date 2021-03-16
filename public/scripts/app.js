@@ -8,10 +8,11 @@ const ctx = canvas.getContext('2d');
 socket.on('fullState', (data) => {
     window.state = data;
     drawPlayerMarkers();
+    setImage(data.background);
 });
 
 socket.on('setImage', (data) => {
-    canvas.style.backgroundImage = `url(${data})`;
+    setImage(data);
 })
 
 canvas.addEventListener('click', function (data) {
@@ -21,6 +22,11 @@ canvas.addEventListener('click', function (data) {
         y: Math.floor(data.clientY - rect.top),
     });
 });
+
+const setImage = (url) => {
+    window.state.background = url;
+    canvas.style.backgroundImage = `url(${url})`;
+}
 
 const drawPlayerMarkers = () => {
     if (!('players' in window.state)) {
