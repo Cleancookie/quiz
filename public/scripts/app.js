@@ -7,12 +7,12 @@ const ctx = canvas.getContext('2d');
 
 socket.on('fullState', (data) => {
     window.state = data;
-    drawPlayerMarkers();
-    setImage(data.background);
 });
 
 socket.on('setImage', (data) => {
-    setImage(data);
+    if (!!data) {
+        window.state.background = data;
+    }
 })
 
 canvas.addEventListener('click', function (data) {
@@ -23,18 +23,12 @@ canvas.addEventListener('click', function (data) {
     });
 });
 
-const setImage = (url) => {
-    window.state.background = url;
-    canvas.style.backgroundImage = `url(${url})`;
-}
+const refreshBoard = () => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-const drawPlayerMarkers = () => {
-    if (!('players' in window.state)) {
-        return;
-    }
-    clearBoard();
+    canvas.style.backgroundImage = `url(${window.state.background})`;
+    
     const players = window.state.players;
-
     for (playerId in players) {
         const player = players[playerId];
         if (!player.x || !player.y) {
@@ -43,12 +37,12 @@ const drawPlayerMarkers = () => {
         ctx.fillStyle = player.colour;
         ctx.fillRect(player.x, player.y, 5, 5);
     }
-};
+}
 
-const clearBoard = () => {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-};
+// Game loop
+setInterval(refreshBoard, 100)
 
+// Move this into admin protected route
 window.setImg = (url) => {
     socket.emit('requestImage', url)
 }
