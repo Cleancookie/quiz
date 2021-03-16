@@ -28,7 +28,13 @@ canvas.addEventListener('click', function (data) {
 const refreshBoard = async () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    canvas.style.backgroundImage = `url(${window.state.background})`;
+    if (!window.state) {
+        return;
+    }
+
+    if (window.state.background) {
+        canvas.style.backgroundImage = `url(${window.state.background})`;
+    }
     
     const players = window.state.players;
     for (playerId in players) {
@@ -61,6 +67,7 @@ const refreshUsersList = async () => {
 
 // Game loop at 144 fps
 setInterval(refreshBoard, (1000/144))
+
 // Move this into admin protected route
 window.setImg = (url) => {
     socket.emit('requestImage', url)
