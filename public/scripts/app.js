@@ -24,7 +24,7 @@ canvas.addEventListener('click', function (data) {
     });
 });
 
-const refreshBoard = () => {
+const refreshBoard = async () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     canvas.style.backgroundImage = `url(${window.state.background})`;
@@ -40,8 +40,8 @@ const refreshBoard = () => {
     }
 }
 
-// Game loop
-setInterval(refreshBoard, 10)
+// Game loop at 144 fps
+setInterval(refreshBoard, (1000/144))
 
 // Move this into admin protected route
 window.setImg = (url) => {
