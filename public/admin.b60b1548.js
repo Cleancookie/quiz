@@ -140,9 +140,9 @@
       this[globalName] = mainExports;
     }
   }
-})({"2pTYN":[function(require,module,exports) {
+})({"4iTPM":[function(require,module,exports) {
 var HMR_HOST = null;
-var HMR_PORT = 65168;
+var HMR_PORT = 25707;
 var HMR_SECURE = false;
 var HMR_ENV_HASH = "d751713988987e9331980363e24189ce";
 module.bundle.HMR_BUNDLE_ID = "d6e08c05cd006140543f121eb60b1548";
@@ -442,103 +442,69 @@ id) /*: string*/
 }
 
 },{}],"16601":[function(require,module,exports) {
-var _popmotion = require('popmotion');
-const io = require('socket.io-client');
-const socket = io('/', {
-  auth: {
-    token: '69420'
-  }
-});
-const canvas = document.querySelector('#canvas');
-/**
-* ADMIN FUNCTIONS
-*/
-let userList = document.querySelector('.js-users');
-userList.addEventListener('click', e => {
-  if (e.target.classList.contains('js-set-icon')) {
-    const icon = prompt('Set icon to');
-    const playerId = e.target.dataset.playerId;
-    socket.emit('icon.set', {
-      playerId: playerId,
-      icon: icon
-    });
-  }
-});
-/**
-* REGULAR DISPLAY STUFF BELOW
-*/
-/**
-* @type {CanvasRenderingContext2D} ctx
-*/
-const ctx = canvas.getContext('2d');
-socket.on('fullState', data => {
-  window.state = data;
-  refreshUsersList();
-});
-socket.on('setImage', data => {
-  if (!!data) {
-    window.state.background = data;
-  }
-});
-socket.on('playerStateUpdate', playerState => {
-  _popmotion.animate({
-    from: window.state.players[playerState.id],
-    to: playerState,
-    duration: 1000 / 12,
-    onUpdate: latest => {
-      window.state.players[playerState.id] = latest;
-    },
-    ease: _popmotion.easeOut
-  });
-});
-const refreshBoard = () => {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  if (!window.state) {
-    return;
-  }
-  if (window.state.background) {
-    canvas.style.backgroundImage = `url(${window.state.background})`;
-  }
-  const players = window.state.players;
-  for (playerId in players) {
-    const player = players[playerId];
-    drawPlayer(player);
-  }
-};
-const drawPlayer = player => {
-  if (!player.x || !player.y) {
-    return;
-  }
-  // Drawing a square
-  // ctx.fillStyle = player.colour;
-  // ctx.fillRect(player.x, player.y, 5, 5);
-  // Drawing emoji
-  ctx.font = '18px Arial';
-  ctx.fillText(player.icon, player.x - 9, player.y + 9);
-};
-const refreshUsersList = () => {
-  let userList = document.querySelector('.js-users');
-  userList.innerHTML = '';
-  let newLiTemplate = document.querySelector('.js-new-li');
-  Object.entries(window.state.players).forEach(player => {
-    player = player[1];
-    let newUser = newLiTemplate.cloneNode(true);
-    newUser.removeAttribute('hidden');
-    newUser.classList.remove('js-new-li');
-    newUser.innerHTML = newUser.innerHTML.replace('{{name}}', player.name);
-    newUser.innerHTML = newUser.innerHTML.replace('{{playerId}}', player.id);
-    newUser.style.color = player.colour;
-    userList.appendChild(newUser);
-  });
-};
-// Game loop at 144 fps
-setInterval(refreshBoard, 1000 / 144);
-// Move this into admin protected route
-window.setImg = url => {
-  socket.emit('requestImage', url);
-};
+const refreshUsersList = require('./functions/refreshUsersList');
+const refreshBoard = require('./functions/refreshBoard');
+const playerStateUpdate = require('./functions/playerStateUpdate');
+const setImage = require('./functions/setImage');
 
-},{"socket.io-client":"fDy9N","popmotion":"2aJle"}],"fDy9N":[function(require,module,exports) {
+const io = require('socket.io-client');
+
+const socket = io('/', {
+    auth: {
+        token: '69420',
+    },
+});
+
+const canvas = document.querySelector('#canvas');
+
+/**
+ * ADMIN FUNCTIONS
+ */
+
+let userList = document.querySelector('.js-users');
+userList.addEventListener('click', (e) => {
+    if (e.target.classList.contains('js-set-icon')) {
+        const icon = prompt('Set icon to');
+        const playerId = e.target.dataset.playerId;
+
+        socket.emit('icon.set', { playerId: playerId, icon: icon });
+    }
+});
+
+const setImageButton = document.querySelector('.js-set-image');
+setImageButton.addEventListener('click', () => {
+    const url = prompt('Image url');
+    socket.emit('requestImage', url);
+})
+
+/**
+ * REGULAR DISPLAY STUFF BELOW
+ */
+
+/**
+ * @type {CanvasRenderingContext2D} ctx
+ */
+const ctx = canvas.getContext('2d');
+
+socket.on('fullState', (data) => {
+    window.state = data;
+    refreshUsersList();
+});
+
+socket.on('setImage', (data) => {
+    setImage(data);
+});
+
+socket.on('playerStateUpdate', (playerState) => {
+    playerStateUpdate(playerState);
+});
+
+// Game loop at 144 fps
+setInterval(() => {
+    refreshBoard(ctx);
+}, 1000 / 144);
+
+},{"socket.io-client":"fDy9N","./functions/refreshUsersList":"3lPEB","./functions/refreshBoard":"1m7KX","./functions/playerStateUpdate":"796qM","./functions/setImage":"5g6ZT"}],"fDy9N":[function(require,module,exports) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Socket = exports.io = exports.Manager = exports.protocol = void 0;
@@ -7075,7 +7041,78 @@ Backoff.prototype.setJitter = function(jitter){
 };
 
 
-},{}],"2aJle":[function(require,module,exports) {
+},{}],"3lPEB":[function(require,module,exports) {
+module.exports = function () {
+    let userList = document.querySelector('.js-users');
+    userList.innerHTML = '';
+    let newLiTemplate = document.querySelector('.js-new-li');
+
+    Object.entries(window.state.players).forEach((player) => {
+        player = player[1];
+        let newUser = newLiTemplate.cloneNode(true);
+        newUser.removeAttribute('hidden');
+        newUser.classList.remove('js-new-li');
+        newUser.innerHTML = newUser.innerHTML.replace('{{name}}', player.name);
+        newUser.innerHTML = newUser.innerHTML.replace(
+            '{{playerId}}',
+            player.id,
+        );
+        newUser.style.color = player.colour;
+        userList.appendChild(newUser);
+    });
+};
+
+},{}],"1m7KX":[function(require,module,exports) {
+const drawPlayer = require("./drawPlayer.js");
+
+module.exports = (ctx) => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    if (!window.state) {
+        console.log('No window state found.');
+        return;
+    }
+
+    if (window.state.background) {
+        canvas.style.backgroundImage = `url(${window.state.background})`;
+    }
+
+    const players = window.state.players;
+    for (playerId in players) {
+        const player = players[playerId];
+        drawPlayer(player, ctx)
+    }
+};
+
+},{"./drawPlayer.js":"1z34r"}],"1z34r":[function(require,module,exports) {
+module.exports = (player, ctx) => {
+    if (!player.x || !player.y) {
+        return;
+    }
+
+    // Drawing a square
+    // ctx.fillStyle = player.colour;
+    // ctx.fillRect(player.x, player.y, 5, 5);
+
+    // Drawing emoji
+    ctx.font = '18px Arial';
+    ctx.fillText(player.icon || player.name, player.x - 9, player.y + 9);
+};
+},{}],"796qM":[function(require,module,exports) {
+var _popmotion = require('popmotion');
+module.exports = playerState => {
+  _popmotion.animate({
+    from: window.state.players[playerState.id],
+    to: playerState,
+    duration: 1000 / 12,
+    onUpdate: latest => {
+      window.state.players[playerState.id] = latest;
+    },
+    ease: _popmotion.easeOut
+  });
+};
+
+},{"popmotion":"2aJle"}],"2aJle":[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -8849,6 +8886,14 @@ exports.cancelSync = cancelSync;
 exports.default = sync;
 exports.getFrameData = getFrameData;
 
-},{}]},["2pTYN","16601"], "16601", "parcelRequired93b")
+},{}],"5g6ZT":[function(require,module,exports) {
+module.exports = (data) => {
+    console.log(data)
+    if (!!data) {
+        window.state.background = data;
+    }
+};
+
+},{}]},["4iTPM","16601"], "16601", "parcelRequired93b")
 
 //# sourceMappingURL=admin.b60b1548.js.map
