@@ -4,18 +4,12 @@ const playerStateUpdate = require('./functions/playerStateUpdate');
 const setImage = require('./functions/setImage');
 
 const io = require('socket.io-client');
-
 const socket = io('/', {
     auth: {
         token: '69420',
     },
 });
-
 const canvas = document.querySelector('#canvas');
-
-/**
- * ADMIN FUNCTIONS
- */
 
 let userList = document.querySelector('.js-users');
 userList.addEventListener('click', (e) => {

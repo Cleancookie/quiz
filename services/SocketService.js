@@ -16,7 +16,6 @@ io.on('connection', (socket) => {
     const authToken = socket?.handshake?.auth?.token;
     socket.join('MainRoom');
 
-
     if (authToken != '69420') {
         // Dont want to create player for admin
 
@@ -31,7 +30,7 @@ io.on('connection', (socket) => {
         console.log(`✨ new user ${state.players[socket.id].name}(${socket.id})`);
     } else {
         console.log(
-            `✨ new Admin`,
+            `✨ new Admin(${socket.id})`,
         );
     }
 
