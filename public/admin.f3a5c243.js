@@ -140,9 +140,9 @@
       this[globalName] = mainExports;
     }
   }
-})({"9Tx10":[function(require,module,exports) {
+})({"XDm3u":[function(require,module,exports) {
 var HMR_HOST = null;
-var HMR_PORT = 15444;
+var HMR_PORT = 59220;
 var HMR_SECURE = false;
 var HMR_ENV_HASH = "d751713988987e9331980363e24189ce";
 module.bundle.HMR_BUNDLE_ID = "8facd061b5f4cc364a1f2fa4f3a5c243";
@@ -511,7 +511,8 @@ const refreshUsersList = () => {
     let newUser = newLiTemplate.cloneNode(true);
     newUser.removeAttribute('hidden');
     newUser.classList.remove('js-new-li');
-    newUser.innerHTML = newUser.innerHTML.replace('{{name}}', player.name);
+    console.log(player);
+    newUser.innerHTML = player.name;
     newUser.style.color = player.colour;
     userList.appendChild(newUser);
   });
@@ -8834,6 +8835,6 @@ exports.cancelSync = cancelSync;
 exports.default = sync;
 exports.getFrameData = getFrameData;
 
-},{}]},["9Tx10","3J6wA"], "3J6wA", "parcelRequired93b")
+},{}]},["XDm3u","3J6wA"], "3J6wA", "parcelRequired93b")
 
-//# sourceMappingURL=index.f3a5c243.js.map
+//# sourceMappingURL=admin.f3a5c243.js.map

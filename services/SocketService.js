@@ -13,14 +13,37 @@ let state = {
 };
 
 io.on('connection', (socket) => {
-    // Init new player on server side
-    state.players[socket.id] = { 
-        id: socket.id,
-        name: getRandomName(),
-        colour: getRandomColor(),
-     };
+    const authToken = socket?.handshake?.auth?.token;
     socket.join('MainRoom');
-    console.log(`✨ new user ${state.players[socket.id].name}(${socket.id})`);
+
+
+    if (authToken != '69420') {
+        // Dont want to create player for admin
+
+        // Init new player on server side
+        state.players[socket.id] = {
+            id: socket.id,
+            name: getRandomName(),
+            colour: getRandomColor(),
+        };
+
+        console.log(`✨ new user ${state.players[socket.id].name}(${socket.id})`);
+    } else {
+        console.log(
+            `✨ new Admin`,
+        );
+    }
+
+    if (authToken == '69420') {
+        // Admin functions
+        socket.on('rename', (data) => {
+            console.log('renaming')
+            console.log(data)
+            state.players[data.playerId].name = data.name;
+
+            io.in('MainRoom').emit('fullState', state);
+        });
+    }
 
     // Init player on client side
     io.in('MainRoom').emit('fullState', state);
@@ -43,13 +66,18 @@ io.on('connection', (socket) => {
 
         setPosition(socket.id, data.x, data.y);
 
-        io.in('MainRoom').emit('playerStateUpdate', state.players[socket.id]);
+        io.in('MainRoom').emit(
+            'playerStateUpdate',
+            state.players[socket.id],
+        );
     });
 
     socket.on('requestImage', (url) => {
         state.background = url;
         io.in('MainRoom').emit('setImage', url);
     });
+
+    return;
 });
 
 function setPosition(playerId, x, y) {

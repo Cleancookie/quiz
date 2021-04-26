@@ -13,13 +13,16 @@
         <div class="container">
             <canvas id="canvas" width="600" height="800"></canvas>
             <div class="sidebar">
+                <div class="action">
+                    
+                </div>
                 <div class="users">
-                    <li hidden class="js-new-li">{{name}}</li>
+                    <li hidden class="js-new-li">{{name}} <input type="button" value="Rename" class='js-rename' data-player-id="{{playerId}}"></li>
                     <ul class="js-users"></ul>
                 </div>
             </div>
         </div>
-
-        <script src="./scripts/app.js"></script>
+        
+        <script src="./scripts/admin.js"></script>
     </body>
 </html>

@@ -140,12 +140,12 @@
       this[globalName] = mainExports;
     }
   }
-})({"9Tx10":[function(require,module,exports) {
+})({"4spjD":[function(require,module,exports) {
 var HMR_HOST = null;
 var HMR_PORT = 15444;
 var HMR_SECURE = false;
 var HMR_ENV_HASH = "d751713988987e9331980363e24189ce";
-module.bundle.HMR_BUNDLE_ID = "8facd061b5f4cc364a1f2fa4f3a5c243";
+module.bundle.HMR_BUNDLE_ID = "d6e08c05cd006140543f121eb60b1548";
 // @flow
 /*global HMR_HOST, HMR_PORT, HMR_ENV_HASH, HMR_SECURE*/
 /*::
@@ -441,11 +441,32 @@ id) /*: string*/
   acceptedAssets[id] = true;
 }
 
-},{}],"3J6wA":[function(require,module,exports) {
-var _popmotion = require("popmotion");
+},{}],"16601":[function(require,module,exports) {
+var _popmotion = require('popmotion');
 const io = require('socket.io-client');
-const socket = io();
+const socket = io('/', {
+  auth: {
+    token: '69420'
+  }
+});
 const canvas = document.querySelector('#canvas');
+/**
+* ADMIN FUNCTIONS
+*/
+let userList = document.querySelector('.js-users');
+userList.addEventListener('click', e => {
+  if (e.target.classList.contains('js-rename')) {
+    const newName = prompt('Rename player to');
+    const playerId = e.target.dataset.playerId;
+    socket.emit('rename', {
+      playerId: playerId,
+      name: newName
+    });
+  }
+});
+/**
+* REGULAR DISPLAY STUFF BELOW
+*/
 /**
 * @type {CanvasRenderingContext2D} ctx
 */
@@ -468,13 +489,6 @@ socket.on('playerStateUpdate', playerState => {
       window.state.players[playerState.id] = latest;
     },
     ease: _popmotion.easeOut
-  });
-});
-canvas.addEventListener('click', function (data) {
-  let rect = canvas.getBoundingClientRect();
-  socket.emit('move', {
-    x: Math.floor(data.clientX - rect.left),
-    y: Math.floor(data.clientY - rect.top)
   });
 });
 const refreshBoard = () => {
@@ -512,6 +526,7 @@ const refreshUsersList = () => {
     newUser.removeAttribute('hidden');
     newUser.classList.remove('js-new-li');
     newUser.innerHTML = newUser.innerHTML.replace('{{name}}', player.name);
+    newUser.innerHTML = newUser.innerHTML.replace('{{playerId}}', player.id);
     newUser.style.color = player.colour;
     userList.appendChild(newUser);
   });
@@ -8834,6 +8849,6 @@ exports.cancelSync = cancelSync;
 exports.default = sync;
 exports.getFrameData = getFrameData;
 
-},{}]},["9Tx10","3J6wA"], "3J6wA", "parcelRequired93b")
+},{}]},["4spjD","16601"], "16601", "parcelRequired93b")
 
-//# sourceMappingURL=index.f3a5c243.js.map
+//# sourceMappingURL=admin.b60b1548.js.map

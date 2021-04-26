@@ -1,7 +1,31 @@
 const io = require('socket.io-client');
-import { animate, easeOut } from "popmotion"
-const socket = io();
+import { animate, easeOut } from 'popmotion';
+const socket = io('/', {
+    auth: {
+        token: '69420',
+    },
+});
 const canvas = document.querySelector('#canvas');
+
+/**
+ * ADMIN FUNCTIONS
+ */
+
+let userList = document.querySelector('.js-users');
+userList.addEventListener('click', (e) => {
+    if (e.target.classList.contains('js-rename')) {
+        const newName = prompt('Rename player to');
+        const playerId = e.target.dataset.playerId;
+
+        socket.emit('rename', {playerId: playerId, name: newName})
+    }
+});
+
+
+/**
+ * REGULAR DISPLAY STUFF BELOW
+ */
+
 /**
  * @type {CanvasRenderingContext2D} ctx
  */
@@ -16,7 +40,7 @@ socket.on('setImage', (data) => {
     if (!!data) {
         window.state.background = data;
     }
-})
+});
 
 socket.on('playerStateUpdate', (playerState) => {
     animate({
@@ -30,14 +54,6 @@ socket.on('playerStateUpdate', (playerState) => {
     });
 });
 
-canvas.addEventListener('click', function (data) {
-    let rect = canvas.getBoundingClientRect();
-    socket.emit('move', {
-        x: Math.floor(data.clientX - rect.left),
-        y: Math.floor(data.clientY - rect.top),
-    });
-});
-
 const refreshBoard = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -48,13 +64,13 @@ const refreshBoard = () => {
     if (window.state.background) {
         canvas.style.backgroundImage = `url(${window.state.background})`;
     }
-    
+
     const players = window.state.players;
     for (playerId in players) {
-        const player = players[playerId]
+        const player = players[playerId];
         drawPlayer(player);
     }
-}
+};
 
 const drawPlayer = (player) => {
     if (!player.x || !player.y) {
@@ -84,15 +100,16 @@ const refreshUsersList = () => {
             '{{name}}',
             player.name,
         );
+        newUser.innerHTML = newUser.innerHTML.replace('{{playerId}}', player.id);
         newUser.style.color = player.colour;
         userList.appendChild(newUser);
     });
-}
+};
 
 // Game loop at 144 fps
-setInterval(refreshBoard, (1000/144))
+setInterval(refreshBoard, 1000 / 144);
 
 // Move this into admin protected route
 window.setImg = (url) => {
-    socket.emit('requestImage', url)
-}
+    socket.emit('requestImage', url);
+};

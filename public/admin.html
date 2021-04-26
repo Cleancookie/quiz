@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="utf-8" />
+        <meta charset="utf-8">
         <title>Quiz</title>
-        <base href="/" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="stylesheet" href="./styles/app.scss" />
+        <base href="/">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/admin.e300dbaf.css">
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22>🧠</text></svg>">
     </head>
 
@@ -13,13 +13,16 @@
         <div class="container">
             <canvas id="canvas" width="600" height="800"></canvas>
             <div class="sidebar">
+                <div class="action">
+                    
+                </div>
                 <div class="users">
-                    <li hidden class="js-new-li">{{name}}</li>
+                    <li hidden="" class="js-new-li">{{name}} <input type="button" value="Rename" class="js-rename" data-player-id="{{playerId}}"></li>
                     <ul class="js-users"></ul>
                 </div>
             </div>
         </div>
-
-        <script src="./scripts/app.js"></script>
+        
+        <script src="/admin.b60b1548.js"></script>
     </body>
 </html>

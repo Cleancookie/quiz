@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "build": "parcel watch index.html --dist-dir ../public/"
+    "build": "parcel watch *.html --dist-dir ../public/"
   },
   "keywords": [],
   "author": "",
