@@ -67,7 +67,7 @@ const drawPlayer = (player) => {
 
     // Drawing emoji
     ctx.font = '18px Arial';
-    ctx.fillText(player.name, player.x - 9, player.y + 9);
+    ctx.fillText(player.icon, player.x - 9, player.y + 9);
 };
 
 const refreshUsersList = () => {

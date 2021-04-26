@@ -140,9 +140,9 @@
       this[globalName] = mainExports;
     }
   }
-})({"4spjD":[function(require,module,exports) {
+})({"2pTYN":[function(require,module,exports) {
 var HMR_HOST = null;
-var HMR_PORT = 15444;
+var HMR_PORT = 65168;
 var HMR_SECURE = false;
 var HMR_ENV_HASH = "d751713988987e9331980363e24189ce";
 module.bundle.HMR_BUNDLE_ID = "d6e08c05cd006140543f121eb60b1548";
@@ -455,12 +455,12 @@ const canvas = document.querySelector('#canvas');
 */
 let userList = document.querySelector('.js-users');
 userList.addEventListener('click', e => {
-  if (e.target.classList.contains('js-rename')) {
-    const newName = prompt('Rename player to');
+  if (e.target.classList.contains('js-set-icon')) {
+    const icon = prompt('Set icon to');
     const playerId = e.target.dataset.playerId;
-    socket.emit('rename', {
+    socket.emit('icon.set', {
       playerId: playerId,
-      name: newName
+      icon: icon
     });
   }
 });
@@ -514,7 +514,7 @@ const drawPlayer = player => {
   // ctx.fillRect(player.x, player.y, 5, 5);
   // Drawing emoji
   ctx.font = '18px Arial';
-  ctx.fillText(player.name, player.x - 9, player.y + 9);
+  ctx.fillText(player.icon, player.x - 9, player.y + 9);
 };
 const refreshUsersList = () => {
   let userList = document.querySelector('.js-users');
@@ -8849,6 +8849,6 @@ exports.cancelSync = cancelSync;
 exports.default = sync;
 exports.getFrameData = getFrameData;
 
-},{}]},["4spjD","16601"], "16601", "parcelRequired93b")
+},{}]},["2pTYN","16601"], "16601", "parcelRequired93b")
 
 //# sourceMappingURL=admin.b60b1548.js.map

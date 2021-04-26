@@ -140,9 +140,9 @@
       this[globalName] = mainExports;
     }
   }
-})({"9Tx10":[function(require,module,exports) {
+})({"19hcO":[function(require,module,exports) {
 var HMR_HOST = null;
-var HMR_PORT = 15444;
+var HMR_PORT = 65168;
 var HMR_SECURE = false;
 var HMR_ENV_HASH = "d751713988987e9331980363e24189ce";
 module.bundle.HMR_BUNDLE_ID = "8facd061b5f4cc364a1f2fa4f3a5c243";
@@ -500,7 +500,7 @@ const drawPlayer = player => {
   // ctx.fillRect(player.x, player.y, 5, 5);
   // Drawing emoji
   ctx.font = '18px Arial';
-  ctx.fillText(player.name, player.x - 9, player.y + 9);
+  ctx.fillText(player.icon, player.x - 9, player.y + 9);
 };
 const refreshUsersList = () => {
   let userList = document.querySelector('.js-users');
@@ -8834,6 +8834,6 @@ exports.cancelSync = cancelSync;
 exports.default = sync;
 exports.getFrameData = getFrameData;
 
-},{}]},["9Tx10","3J6wA"], "3J6wA", "parcelRequired93b")
+},{}]},["19hcO","3J6wA"], "3J6wA", "parcelRequired93b")
 
 //# sourceMappingURL=index.f3a5c243.js.map

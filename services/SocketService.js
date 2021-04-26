@@ -25,6 +25,7 @@ io.on('connection', (socket) => {
             id: socket.id,
             name: getRandomName(),
             colour: getRandomColor(),
+            icon: '',
         };
 
         console.log(`✨ new user ${state.players[socket.id].name}(${socket.id})`);
@@ -36,10 +37,8 @@ io.on('connection', (socket) => {
 
     if (authToken == '69420') {
         // Admin functions
-        socket.on('rename', (data) => {
-            console.log('renaming')
-            console.log(data)
-            state.players[data.playerId].name = data.name;
+        socket.on('icon.set', (data) => {
+            state.players[data.playerId].icon = data.icon;
 
             io.in('MainRoom').emit('fullState', state);
         });

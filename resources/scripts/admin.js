@@ -13,11 +13,11 @@ const canvas = document.querySelector('#canvas');
 
 let userList = document.querySelector('.js-users');
 userList.addEventListener('click', (e) => {
-    if (e.target.classList.contains('js-rename')) {
-        const newName = prompt('Rename player to');
+    if (e.target.classList.contains('js-set-icon')) {
+        const icon = prompt('Set icon to');
         const playerId = e.target.dataset.playerId;
 
-        socket.emit('rename', {playerId: playerId, name: newName})
+        socket.emit('icon.set', { playerId: playerId, icon: icon });
     }
 });
 
@@ -83,7 +83,7 @@ const drawPlayer = (player) => {
 
     // Drawing emoji
     ctx.font = '18px Arial';
-    ctx.fillText(player.name, player.x - 9, player.y + 9);
+    ctx.fillText(player.icon, player.x - 9, player.y + 9);
 };
 
 const refreshUsersList = () => {
