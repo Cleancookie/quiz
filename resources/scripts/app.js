@@ -1,5 +1,5 @@
 const io = require('socket.io-client');
-import { animate } from "popmotion"
+import { animate, easeOut } from "popmotion"
 const socket = io();
 const canvas = document.querySelector('#canvas');
 /**
@@ -22,8 +22,11 @@ socket.on('playerStateUpdate', (playerState) => {
     animate({
         from: window.state.players[playerState.id],
         to: playerState,
-        duration: 50,
-        onUpdate: (latest) => {window.state.players[playerState.id] = latest},
+        duration: 1000 / 12,
+        onUpdate: (latest) => {
+            window.state.players[playerState.id] = latest;
+        },
+        ease: easeOut,
     });
 });
 
@@ -48,35 +51,40 @@ const refreshBoard = () => {
     
     const players = window.state.players;
     for (playerId in players) {
-        const player = players[playerId];
-        if (!player.x || !player.y) {
-            continue;
-        }
-        ctx.fillStyle = player.colour;
-        ctx.fillRect(player.x, player.y, 5, 5);
+        const player = players[playerId]
+        drawPlayer(player);
     }
 }
 
+const drawPlayer = (player) => {
+    if (!player.x || !player.y) {
+        return;
+    }
+
+    // Drawing a square
+    // ctx.fillStyle = player.colour;
+    // ctx.fillRect(player.x, player.y, 5, 5);
+
+    // Drawing emoji
+    ctx.font = '18px Arial';
+    ctx.fillText(player.name, player.x - 9, player.y + 9);
+};
+
 const refreshUsersList = () => {
-    const names = Object.entries(window.state.players).map((player) => {
-        return player[1].name;
-    });
-
-    // Update user counter
-    let userListHeading = document.querySelector('.js-users-title');
-    userListHeading.innerHTML = `Users(${Object.entries(window.state.players).length})`;
-
     let userList = document.querySelector('.js-users');
     userList.innerHTML = '';
     let newLiTemplate = document.querySelector('.js-new-li');
 
-    names.forEach((name) => {
+    Object.entries(window.state.players).forEach((player) => {
+        player = player[1];
         let newUser = newLiTemplate.cloneNode(true);
         newUser.removeAttribute('hidden');
         newUser.classList.remove('js-new-li');
-        newUser.innerHTML = name;
+        console.log(player);
+        newUser.innerHTML = player.name;
+        newUser.style.color = player.colour;
         userList.appendChild(newUser);
-    })
+    });
 }
 
 // Game loop at 144 fps

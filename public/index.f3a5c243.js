@@ -140,9 +140,9 @@
       this[globalName] = mainExports;
     }
   }
-})({"6tOZV":[function(require,module,exports) {
+})({"YA0LK":[function(require,module,exports) {
 var HMR_HOST = null;
-var HMR_PORT = 1234;
+var HMR_PORT = 23216;
 var HMR_SECURE = false;
 var HMR_ENV_HASH = "d751713988987e9331980363e24189ce";
 module.bundle.HMR_BUNDLE_ID = "8facd061b5f4cc364a1f2fa4f3a5c243";
@@ -463,10 +463,11 @@ socket.on('playerStateUpdate', playerState => {
   _popmotion.animate({
     from: window.state.players[playerState.id],
     to: playerState,
-    duration: 50,
+    duration: 1000 / 12,
     onUpdate: latest => {
       window.state.players[playerState.id] = latest;
-    }
+    },
+    ease: _popmotion.easeOut
   });
 });
 canvas.addEventListener('click', function (data) {
@@ -487,28 +488,32 @@ const refreshBoard = () => {
   const players = window.state.players;
   for (playerId in players) {
     const player = players[playerId];
-    if (!player.x || !player.y) {
-      continue;
-    }
-    ctx.fillStyle = player.colour;
-    ctx.fillRect(player.x, player.y, 5, 5);
+    drawPlayer(player);
   }
 };
+const drawPlayer = player => {
+  if (!player.x || !player.y) {
+    return;
+  }
+  // Drawing a square
+  // ctx.fillStyle = player.colour;
+  // ctx.fillRect(player.x, player.y, 5, 5);
+  // Drawing emoji
+  ctx.font = '18px Arial';
+  ctx.fillText(player.name, player.x - 9, player.y + 9);
+};
 const refreshUsersList = () => {
-  const names = Object.entries(window.state.players).map(player => {
-    return player[1].name;
-  });
-  // Update user counter
-  let userListHeading = document.querySelector('.js-users-title');
-  userListHeading.innerHTML = `Users(${Object.entries(window.state.players).length})`;
   let userList = document.querySelector('.js-users');
   userList.innerHTML = '';
   let newLiTemplate = document.querySelector('.js-new-li');
-  names.forEach(name => {
+  Object.entries(window.state.players).forEach(player => {
+    player = player[1];
     let newUser = newLiTemplate.cloneNode(true);
     newUser.removeAttribute('hidden');
     newUser.classList.remove('js-new-li');
-    newUser.innerHTML = name;
+    console.log(player);
+    newUser.innerHTML = player.name;
+    newUser.style.color = player.colour;
     userList.appendChild(newUser);
   });
 };
@@ -8830,6 +8835,6 @@ exports.cancelSync = cancelSync;
 exports.default = sync;
 exports.getFrameData = getFrameData;
 
-},{}]},["6tOZV","3J6wA"], "3J6wA", "parcelRequired93b")
+},{}]},["YA0LK","3J6wA"], "3J6wA", "parcelRequired93b")
 
 //# sourceMappingURL=index.f3a5c243.js.map

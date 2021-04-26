@@ -17,7 +17,7 @@ io.on('connection', (socket) => {
     state.players[socket.id] = { 
         id: socket.id,
         name: getRandomName(),
-        colour: getRandomColor()
+        colour: getRandomColor(),
      };
     socket.join('MainRoom');
     console.log(`✨ new user ${state.players[socket.id].name}(${socket.id})`);
