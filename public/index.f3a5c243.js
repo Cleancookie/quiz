@@ -140,9 +140,9 @@
       this[globalName] = mainExports;
     }
   }
-})({"1mOLA":[function(require,module,exports) {
+})({"6SwCw":[function(require,module,exports) {
 var HMR_HOST = null;
-var HMR_PORT = 64807;
+var HMR_PORT = 22386;
 var HMR_SECURE = false;
 var HMR_ENV_HASH = "d751713988987e9331980363e24189ce";
 module.bundle.HMR_BUNDLE_ID = "8facd061b5f4cc364a1f2fa4f3a5c243";
@@ -7027,7 +7027,7 @@ module.exports = function () {
         let newUser = newLiTemplate.cloneNode(true);
         newUser.removeAttribute('hidden');
         newUser.classList.remove('js-new-li');
-        newUser.innerHTML = newUser.innerHTML.replace('{{name}}', player.name);
+        newUser.innerHTML = newUser.innerHTML.replace('{{name}}', `${player.icon} ${player.name}`);
         newUser.innerHTML = newUser.innerHTML.replace(
             '{{playerId}}',
             player.id,
@@ -8877,6 +8877,6 @@ module.exports = (data, canvas, socket) => {
         y: Math.floor(data.clientY - rect.top),
     });
 };
-},{}]},["1mOLA","3J6wA"], "3J6wA", "parcelRequired93b")
+},{}]},["6SwCw","3J6wA"], "3J6wA", "parcelRequired93b")
 
 //# sourceMappingURL=index.f3a5c243.js.map

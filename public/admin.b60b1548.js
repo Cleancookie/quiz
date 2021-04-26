@@ -140,9 +140,9 @@
       this[globalName] = mainExports;
     }
   }
-})({"11mJV":[function(require,module,exports) {
+})({"41X4X":[function(require,module,exports) {
 var HMR_HOST = null;
-var HMR_PORT = 64807;
+var HMR_PORT = 22386;
 var HMR_SECURE = false;
 var HMR_ENV_HASH = "d751713988987e9331980363e24189ce";
 module.bundle.HMR_BUNDLE_ID = "d6e08c05cd006140543f121eb60b1548";
@@ -509,7 +509,7 @@ module.exports = function () {
         let newUser = newLiTemplate.cloneNode(true);
         newUser.removeAttribute('hidden');
         newUser.classList.remove('js-new-li');
-        newUser.innerHTML = newUser.innerHTML.replace('{{name}}', player.name);
+        newUser.innerHTML = newUser.innerHTML.replace('{{name}}', `${player.icon} ${player.name}`);
         newUser.innerHTML = newUser.innerHTML.replace(
             '{{playerId}}',
             player.id,
@@ -8888,6 +8888,6 @@ Backoff.prototype.setJitter = function(jitter){
 };
 
 
-},{}]},["11mJV","16601"], "16601", "parcelRequired93b")
+},{}]},["41X4X","16601"], "16601", "parcelRequired93b")
 
 //# sourceMappingURL=admin.b60b1548.js.map
