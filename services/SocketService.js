@@ -4,6 +4,7 @@ const {
     adjectives,
     animals,
 } = require('unique-names-generator');
+const getRandomEmoji = require('./functions/getRandomEmoji');
 
 const io = socketio();
 
@@ -24,10 +25,10 @@ io.on('connection', (socket) => {
             id: socket.id,
             name: getRandomName(),
             colour: getRandomColor(),
-            icon: '',
+            icon: getRandomEmoji(),
         };
 
-        console.log(`✨ new user ${state.players[socket.id].name}(${socket.id})`);
+        console.log(`✨ new user ${state.players[socket.id].icon} ${state.players[socket.id].name}(${socket.id})`);
     } else {
         console.log(
             `✨ new Admin(${socket.id})`,
