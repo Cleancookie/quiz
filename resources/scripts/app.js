@@ -19,7 +19,6 @@ socket.on('fullState', (data) => {
     // mark the current user
     window.state.players[socket.id].me = true;
 
-    console.log(window.state);
     refreshUsersList();
 });
 
@@ -37,5 +36,5 @@ canvas.addEventListener('click', (data) => {
 
 // Game loop at 144 fps
 setInterval(() => {
-    refreshBoard(ctx, { blindfold: window.state.blindfold });
+    refreshBoard(canvas, { blindfold: window.state.blindfold });
 }, 1000 / 144);

@@ -1,7 +1,11 @@
-module.exports = (data, canvas, socket) => {
-    let rect = canvas.getBoundingClientRect();
+module.exports = (click, canvas, socket) => {
+    let rect = canvas.getBoundingClientRect(); // size of canvas element
+
+    // x is number of pixels the cursor is from the left of the box, in %
+    const x = (click.clientX - rect.left) / rect.width;
+    const y = (click.clientY - rect.top) / rect.height;
     socket.emit('move', {
-        x: Math.floor(data.clientX - rect.left),
-        y: Math.floor(data.clientY - rect.top),
+        x: x,
+        y: y,
     });
-};
+};;
