@@ -66,9 +66,11 @@ io.on('connection', (socket) => {
     // Socket event listeners
     socket.on('disconnect', () => {
         let player = state.players[socket.id];
-        playerArchive[socket.name] = player;
-        console.log(`⚡ Player ${player.name} disconnect!  State saved into archive`);
-        delete state.players[socket.id];
+        if (!!player) {
+            playerArchive[socket.name] = player;
+            console.log(`⚡ Player ${player.name} disconnect!  State saved into archive`);
+            delete state.players[socket.id];
+        }
         io.in('MainRoom').emit('fullState', state);
     });
 
