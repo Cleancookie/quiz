@@ -1,4 +1,4 @@
-module.exports = () => {
+module.exports = (seed) => {
     const emojis = [
         '😄',
         '😃',
@@ -821,5 +821,7 @@ module.exports = () => {
         '🔹',
     ];
 
-    return emojis[Math.floor(Math.random() * emojis.length)];
+    seed = seed || Math.random();
+    
+    return emojis[Math.floor(seed * emojis.length)];
 };

@@ -14,20 +14,28 @@ let state = {
     blindfold: false,
 };
 
+let playerArchive = {}
+
 io.on('connection', (socket) => {
     const authToken = socket?.handshake?.auth?.token;
     socket.join('MainRoom');
 
     if (authToken != '69420') {
-        // Dont want to create player for admin
-
         // Init new player on server side
-        state.players[socket.id] = {
+        let player = {
             id: socket.id,
-            name: getRandomName(),
+            name: getRandomName(authToken),
             colour: getRandomColor(),
-            icon: getRandomEmoji(),
+            icon: getRandomEmoji(authToken),
         };
+
+        if (!!playerArchive[player.name]) {
+            player = playerArchive[player.name];
+            player.id = socket.id;
+        }
+
+        state.players[socket.id] = player;
+        playerArchive[player.name] = player;
 
         console.log(`✨ new user ${state.players[socket.id].icon} ${state.players[socket.id].name}(${socket.id})`);
     } else {
@@ -57,6 +65,9 @@ io.on('connection', (socket) => {
 
     // Socket event listeners
     socket.on('disconnect', () => {
+        let player = state.players[socket.id];
+        playerArchive[socket.name] = player;
+        console.log(`⚡ Player ${player.name} disconnect!  State saved into archive`);
         delete state.players[socket.id];
         io.in('MainRoom').emit('fullState', state);
     });
@@ -94,17 +105,24 @@ function setPosition(playerId, x, y) {
 }
 
 function getRandomColor() {
+    // https://colourco.de/
     const colours = ['#EED1CC', '#EBEECB', '#D6EECB', '#CDEEDD', '#CDD7EE', '#E8CCEE'];
 
     return colours[Math.floor(Math.random() * colours.length)];
 }
 
-function getRandomName() {
-    return uniqueNamesGenerator({
+function getRandomName(seed = false) {
+    let params = {
         dictionaries: [adjectives, animals],
         separator: ' ',
         style: 'capital',
-    });
+    };
+
+    if (seed !== false) {
+        params.seed = seed * 1000000;
+    }
+
+    return uniqueNamesGenerator(params);
 }
 
 module.exports = io;

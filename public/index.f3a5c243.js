@@ -450,7 +450,13 @@ const setImage = require('./functions/setImage');
 const io = require('socket.io-client');
 const canvasClick = require('./functions/canvasClick');
 
-const socket = io();
+const authToken = localStorage.getItem('token') || Math.random();
+const socket = io({
+    auth: {
+        token: authToken
+    },
+});
+localStorage.setItem('token', authToken);
 
 const canvas = document.querySelector('#canvas');
 
