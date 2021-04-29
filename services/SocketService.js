@@ -30,6 +30,7 @@ io.on('connection', (socket) => {
         };
 
         if (!!playerArchive[player.name]) {
+            console.log(`⛑ recovered ${player.icon} ${player.name}(${player.id})`);
             player = playerArchive[player.name];
             player.id = socket.id;
         }
