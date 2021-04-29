@@ -7031,7 +7031,7 @@ module.exports = function () {
         let newUser = newLiTemplate.cloneNode(true);
         newUser.removeAttribute('hidden');
         newUser.classList.remove('js-new-li');
-        newUser.innerHTML = newUser.innerHTML.replace('{{name}}', `${player.icon} ${player.name}`);
+        newUser.innerHTML = newUser.innerHTML.replace('{{name}}', `${player.icon} ${player.name}` + (player.me === true ? ' (me)' : ''));
         newUser.innerHTML = newUser.innerHTML.replace(
             '{{playerId}}',
             player.id,

@@ -94,15 +94,7 @@ function setPosition(playerId, x, y) {
 }
 
 function getRandomColor() {
-    const colours = [
-        '#BB5A3E',
-        '#ABBB3E',
-        '#6CBB3E',
-        '#40BFBB',
-        '#4644C1',
-        '#BC47C2',
-        '#0D2623',
-    ];
+    const colours = ['#EED1CC', '#EBEECB', '#D6EECB', '#CDEEDD', '#CDD7EE', '#E8CCEE'];
 
     return colours[Math.floor(Math.random() * colours.length)];
 }

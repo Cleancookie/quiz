@@ -57,5 +57,5 @@ socket.on('playerStateUpdate', (playerState) => {
 
 // Game loop at 144 fps
 setInterval(() => {
-    refreshBoard(ctx, {blindfold: false});
+    refreshBoard(canvas, {blindfold: false});
 }, 1000 / 144);

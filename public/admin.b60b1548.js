@@ -501,7 +501,7 @@ socket.on('playerStateUpdate', (playerState) => {
 
 // Game loop at 144 fps
 setInterval(() => {
-    refreshBoard(ctx, {blindfold: false});
+    refreshBoard(canvas, {blindfold: false});
 }, 1000 / 144);
 
 },{"./functions/refreshUsersList":"3lPEB","./functions/refreshBoard":"1m7KX","./functions/playerStateUpdate":"796qM","./functions/setImage":"5g6ZT","socket.io-client":"fDy9N"}],"3lPEB":[function(require,module,exports) {
@@ -515,7 +515,7 @@ module.exports = function () {
         let newUser = newLiTemplate.cloneNode(true);
         newUser.removeAttribute('hidden');
         newUser.classList.remove('js-new-li');
-        newUser.innerHTML = newUser.innerHTML.replace('{{name}}', `${player.icon} ${player.name}`);
+        newUser.innerHTML = newUser.innerHTML.replace('{{name}}', `${player.icon} ${player.name}` + (player.me === true ? ' (me)' : ''));
         newUser.innerHTML = newUser.innerHTML.replace(
             '{{playerId}}',
             player.id,

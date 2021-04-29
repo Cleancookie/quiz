@@ -3,6 +3,13 @@ body {
   font-family: "Comic Neue", cursive;
   font-size: 1.2rem;
   background-color: #ececec;
+  margin: 0;
+}
+.dark-bg {
+  background-image: url("dark.6c17220f.jpg");
+}
+.light-bg {
+  background-image: url("light.089c0c3d.jpg");
 }
 canvas {
   border: 0px;
@@ -10,8 +17,14 @@ canvas {
   background-position: center;
   background-repeat: no-repeat;
   background-color: #fff;
-  box-shadow: 12px 10px 0px 1px black;
-  border-radius: 4px;
+  box-shadow: 26px 26px 0px 1px black;
+  border-radius: 28px;
+  border: 4px solid black;
+  flex: 0 1 100%;
+  min-width: 0;
+  min-height: 0;
+  max-height: 800px;
+  max-width: 600px;
 }
 .container {
   margin: auto;
@@ -20,10 +33,10 @@ canvas {
   height: 100vh;
   align-items: center;
   justify-content: center;
+  padding: 0 40px;
 }
 .sidebar {
   padding: 0 40px;
-  height: 800px;
 }
 .sidebar ul {
   padding: 0;
