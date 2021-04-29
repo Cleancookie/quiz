@@ -11,8 +11,7 @@ const socket = io('/', {
 });
 const canvas = document.querySelector('#canvas');
 
-let userList = document.querySelector('.js-users');
-userList.addEventListener('click', (e) => {
+document.querySelector('.js-users').addEventListener('click', (e) => {
     if (e.target.classList.contains('js-set-icon')) {
         const icon = prompt('Set icon to');
         const playerId = e.target.dataset.playerId;
@@ -21,11 +20,18 @@ userList.addEventListener('click', (e) => {
     }
 });
 
-const setImageButton = document.querySelector('.js-set-image');
-setImageButton.addEventListener('click', () => {
+document.querySelector('.js-set-image').addEventListener('click', (e) => {
     const url = prompt('Image url');
     socket.emit('requestImage', url);
 })
+
+document.querySelector('.js-set-blindfold-on').addEventListener('click', (e) => {
+    socket.emit('blindfold.set', { blindfold: true });
+});
+
+document.querySelector('.js-set-blindfold-off').addEventListener('click', (e) => {
+    socket.emit('blindfold.set', { blindfold: false });
+});
 
 /**
  * REGULAR DISPLAY STUFF BELOW
@@ -51,5 +57,5 @@ socket.on('playerStateUpdate', (playerState) => {
 
 // Game loop at 144 fps
 setInterval(() => {
-    refreshBoard(ctx);
+    refreshBoard(ctx, {blindfold: false});
 }, 1000 / 144);

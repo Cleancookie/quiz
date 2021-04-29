@@ -11,6 +11,7 @@ const io = socketio();
 let state = {
     players: {},
     background: null,
+    blindfold: false,
 };
 
 io.on('connection', (socket) => {
@@ -39,7 +40,14 @@ io.on('connection', (socket) => {
         // Admin functions
         socket.on('icon.set', (data) => {
             state.players[data.playerId].icon = data.icon;
+            console.log(`🚨 ${state.players[data.playerId].name} now has the icon ${data.icon}`);
 
+            io.in('MainRoom').emit('fullState', state);
+        });
+
+        socket.on('blindfold.set', (data) => {
+            state.blindfold = !!data.blindfold;
+            console.log(`🚨 Blindfold is now ${data.blindfold ? 'on' : 'off'}`);
             io.in('MainRoom').emit('fullState', state);
         });
     }

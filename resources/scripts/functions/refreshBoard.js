@@ -1,6 +1,6 @@
 const drawPlayer = require("./drawPlayer.js");
 
-module.exports = (ctx) => {
+module.exports = (ctx, options) => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     if (!window.state) {
@@ -15,6 +15,6 @@ module.exports = (ctx) => {
     const players = window.state.players;
     for (playerId in players) {
         const player = players[playerId];
-        drawPlayer(player, ctx)
+        drawPlayer(player, ctx, { blindfold: options.blindfold || false });
     }
 };

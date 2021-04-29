@@ -140,9 +140,9 @@
       this[globalName] = mainExports;
     }
   }
-})({"41X4X":[function(require,module,exports) {
+})({"3Kgi2":[function(require,module,exports) {
 var HMR_HOST = null;
-var HMR_PORT = 22386;
+var HMR_PORT = 1234;
 var HMR_SECURE = false;
 var HMR_ENV_HASH = "d751713988987e9331980363e24189ce";
 module.bundle.HMR_BUNDLE_ID = "d6e08c05cd006140543f121eb60b1548";
@@ -455,8 +455,7 @@ const socket = io('/', {
 });
 const canvas = document.querySelector('#canvas');
 
-let userList = document.querySelector('.js-users');
-userList.addEventListener('click', (e) => {
+document.querySelector('.js-users').addEventListener('click', (e) => {
     if (e.target.classList.contains('js-set-icon')) {
         const icon = prompt('Set icon to');
         const playerId = e.target.dataset.playerId;
@@ -465,11 +464,18 @@ userList.addEventListener('click', (e) => {
     }
 });
 
-const setImageButton = document.querySelector('.js-set-image');
-setImageButton.addEventListener('click', () => {
+document.querySelector('.js-set-image').addEventListener('click', (e) => {
     const url = prompt('Image url');
     socket.emit('requestImage', url);
 })
+
+document.querySelector('.js-set-blindfold-on').addEventListener('click', (e) => {
+    socket.emit('blindfold.set', { blindfold: true });
+});
+
+document.querySelector('.js-set-blindfold-off').addEventListener('click', (e) => {
+    socket.emit('blindfold.set', { blindfold: false });
+});
 
 /**
  * REGULAR DISPLAY STUFF BELOW
@@ -495,7 +501,7 @@ socket.on('playerStateUpdate', (playerState) => {
 
 // Game loop at 144 fps
 setInterval(() => {
-    refreshBoard(ctx);
+    refreshBoard(ctx, {blindfold: false});
 }, 1000 / 144);
 
 },{"./functions/refreshUsersList":"3lPEB","./functions/refreshBoard":"1m7KX","./functions/playerStateUpdate":"796qM","./functions/setImage":"5g6ZT","socket.io-client":"fDy9N"}],"3lPEB":[function(require,module,exports) {
@@ -522,7 +528,7 @@ module.exports = function () {
 },{}],"1m7KX":[function(require,module,exports) {
 const drawPlayer = require("./drawPlayer.js");
 
-module.exports = (ctx) => {
+module.exports = (ctx, options) => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     if (!window.state) {
@@ -537,14 +543,21 @@ module.exports = (ctx) => {
     const players = window.state.players;
     for (playerId in players) {
         const player = players[playerId];
-        drawPlayer(player, ctx)
+        drawPlayer(player, ctx, { blindfold: options.blindfold || false });
     }
 };
 
 },{"./drawPlayer.js":"1z34r"}],"1z34r":[function(require,module,exports) {
-module.exports = (player, ctx) => {
+module.exports = (player, ctx, options = {}) => {
     if (!player.x || !player.y) {
         return;
+    }
+
+    let blindfold = options.blindfold || false;
+
+    // Users should still be able to see themselves
+    if (player.me === true) {
+        blindfold = false;
     }
 
     // Drawing a square
@@ -553,7 +566,7 @@ module.exports = (player, ctx) => {
 
     // Drawing emoji
     ctx.font = '18px Arial';
-    ctx.fillText(player.icon || player.name, player.x - 9, player.y + 9);
+    ctx.fillText(!blindfold ? player.icon : '', player.x - 9, player.y + 9);
 };
 },{}],"796qM":[function(require,module,exports) {
 var _popmotion = require('popmotion');
@@ -8888,6 +8901,6 @@ Backoff.prototype.setJitter = function(jitter){
 };
 
 
-},{}]},["41X4X","16601"], "16601", "parcelRequired93b")
+},{}]},["3Kgi2","16601"], "16601", "parcelRequired93b")
 
 //# sourceMappingURL=admin.b60b1548.js.map

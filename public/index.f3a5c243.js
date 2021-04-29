@@ -140,9 +140,9 @@
       this[globalName] = mainExports;
     }
   }
-})({"6SwCw":[function(require,module,exports) {
+})({"6tOZV":[function(require,module,exports) {
 var HMR_HOST = null;
-var HMR_PORT = 22386;
+var HMR_PORT = 1234;
 var HMR_SECURE = false;
 var HMR_ENV_HASH = "d751713988987e9331980363e24189ce";
 module.bundle.HMR_BUNDLE_ID = "8facd061b5f4cc364a1f2fa4f3a5c243";
@@ -459,6 +459,11 @@ const ctx = canvas.getContext('2d');
 
 socket.on('fullState', (data) => {
     window.state = data;
+
+    // mark the current user
+    window.state.players[socket.id].me = true;
+
+    console.log(window.state);
     refreshUsersList();
 });
 
@@ -476,7 +481,7 @@ canvas.addEventListener('click', (data) => {
 
 // Game loop at 144 fps
 setInterval(() => {
-    refreshBoard(ctx);
+    refreshBoard(ctx, { blindfold: window.state.blindfold });
 }, 1000 / 144);
 
 },{"socket.io-client":"fDy9N","./functions/refreshUsersList":"3lPEB","./functions/refreshBoard":"1m7KX","./functions/playerStateUpdate":"796qM","./functions/setImage":"5g6ZT","./functions/canvasClick":"nVHQ3"}],"fDy9N":[function(require,module,exports) {
@@ -7040,7 +7045,7 @@ module.exports = function () {
 },{}],"1m7KX":[function(require,module,exports) {
 const drawPlayer = require("./drawPlayer.js");
 
-module.exports = (ctx) => {
+module.exports = (ctx, options) => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     if (!window.state) {
@@ -7055,14 +7060,21 @@ module.exports = (ctx) => {
     const players = window.state.players;
     for (playerId in players) {
         const player = players[playerId];
-        drawPlayer(player, ctx)
+        drawPlayer(player, ctx, { blindfold: options.blindfold || false });
     }
 };
 
 },{"./drawPlayer.js":"1z34r"}],"1z34r":[function(require,module,exports) {
-module.exports = (player, ctx) => {
+module.exports = (player, ctx, options = {}) => {
     if (!player.x || !player.y) {
         return;
+    }
+
+    let blindfold = options.blindfold || false;
+
+    // Users should still be able to see themselves
+    if (player.me === true) {
+        blindfold = false;
     }
 
     // Drawing a square
@@ -7071,7 +7083,7 @@ module.exports = (player, ctx) => {
 
     // Drawing emoji
     ctx.font = '18px Arial';
-    ctx.fillText(player.icon || player.name, player.x - 9, player.y + 9);
+    ctx.fillText(!blindfold ? player.icon : '', player.x - 9, player.y + 9);
 };
 },{}],"796qM":[function(require,module,exports) {
 var _popmotion = require('popmotion');
@@ -8877,6 +8889,6 @@ module.exports = (data, canvas, socket) => {
         y: Math.floor(data.clientY - rect.top),
     });
 };
-},{}]},["6SwCw","3J6wA"], "3J6wA", "parcelRequired93b")
+},{}]},["6tOZV","3J6wA"], "3J6wA", "parcelRequired93b")
 
 //# sourceMappingURL=index.f3a5c243.js.map
